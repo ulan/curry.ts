@@ -1,3 +1,4 @@
+var Prelude_1 = require('./Prelude');
 function add(xs, ys) {
     return xs.concat(ys);
 }
@@ -40,6 +41,7 @@ function intersperse(x, xs) {
         result[i + i + 1] = x;
     }
     result[result.length - 1] = xs[xs.length - 1];
+    return result;
 }
 exports.intersperse = intersperse;
 function intercalate(xs, xss) {
@@ -175,11 +177,8 @@ function filter(f, xs) {
     return result;
 }
 exports.filter = filter;
-function min(a, b) {
-    return a < b ? a : b;
-}
 function zip(xs, ys) {
-    var n = min(xs.length, ys.length);
+    var n = Prelude_1.min(xs.length, ys.length);
     var result = new Array(n);
     for (var i = 0; i < n; i++) {
         result[i] = [xs[i], ys[i]];

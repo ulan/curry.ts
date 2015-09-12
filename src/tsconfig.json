@@ -8,6 +8,9 @@
         "./**/*.ts"
     ],
     "files": [
-        "./List.ts"
+        "./List.d.ts",
+        "./List.ts",
+        "./Prelude.d.ts",
+        "./Prelude.ts"
     ]
 }

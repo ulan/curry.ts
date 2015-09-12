@@ -1,3 +1,5 @@
+import {min} from './Prelude';
+
 export function add<T>(xs : T[], ys : T[]) : T[] {
     return xs.concat(ys);
 }
@@ -33,6 +35,7 @@ export function intersperse<T>(x : T, xs : T[]) : T[] {
         result[i + i + 1] = x;
     }
     result[result.length - 1] = xs[xs.length - 1];
+    return result;
 }
 export function intercalate<T>(xs : T[], xss : T[][]) : T[] {
     return concat(intersperse(xs, xss));
@@ -146,9 +149,6 @@ export function filter<T>(f : (x : T) => boolean, xs : T[]) : T[] {
         if (f(xs[i])) result.push(xs[i]);
     }
     return result;
-}
-function min(a : number, b : number) : number {
-    return a < b ? a : b;
 }
 export function zip<A, B>(xs : A[], ys : B[]) : [A, B][] {
     let n = min(xs.length, ys.length);
