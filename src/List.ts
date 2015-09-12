@@ -127,7 +127,7 @@ export function group<T>(xs : T[]) : T[][] {
     if (xs.length == 0) {
         return [];
     }
-    let result = [];
+    let result : T[][] = [];
     let last = [xs[0]];
     for (let i = 1; i < xs.length; i++) {
         if (last[0] === xs[i]) {
@@ -141,7 +141,7 @@ export function group<T>(xs : T[]) : T[][] {
     return result;
 }
 export function filter<T>(f : (x : T) => boolean, xs : T[]) : T[] {
-    let result = [];
+    let result : T[] = [];
     for (let i = 0; i < xs.length; i++) {
         if (f(xs[i])) result.push(xs[i]);
     }
