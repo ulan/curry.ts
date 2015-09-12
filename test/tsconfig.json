@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "outDir": "../build"
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "../build/*.d.ts"
+    ],
+    "files": [
+        "./Test.ts",
+        "./typings/chai/chai.d.ts",
+        "./typings/mocha/mocha.d.ts"
+    ]
+}
