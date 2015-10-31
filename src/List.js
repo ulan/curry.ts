@@ -93,24 +93,69 @@ function product(xs) {
     return result;
 }
 exports.product = product;
-function maximum(xs) {
-    var result = xs[0];
-    for (var i = 1; i < xs.length; i++) {
+function sort(xs, compare) {
+    return copy(xs).sort(compare);
+}
+exports.sort = sort;
+function sortInPlace(xs, compare) {
+    xs.sort(compare);
+    return xs;
+}
+exports.sortInPlace = sortInPlace;
+function maximumInRange(xs, s, e) {
+    var result = xs[s];
+    for (var i = s + 1; i <= e; i++) {
         if (result < xs[i])
             result = xs[i];
     }
     return result;
 }
+exports.maximumInRange = maximumInRange;
+function maximum(xs) {
+    return maximumInRange(xs, 0, xs.length - 1);
+}
 exports.maximum = maximum;
-function minimum(xs) {
-    var result = xs[0];
-    for (var i = 1; i < xs.length; i++) {
+function maximumInRangeWith(xs, s, e, f) {
+    var result = f(xs[s]);
+    for (var i = s + 1; i <= e; i++) {
+        var candidate = f(xs[i]);
+        if (result < candidate)
+            result = candidate;
+    }
+    return result;
+}
+exports.maximumInRangeWith = maximumInRangeWith;
+function maximumWith(xs, f) {
+    return maximumInRangeWith(xs, 0, xs.length - 1, f);
+}
+exports.maximumWith = maximumWith;
+function minimumInRange(xs, s, e) {
+    var result = xs[s];
+    for (var i = s + 1; i <= e; i++) {
         if (result > xs[i])
             result = xs[i];
     }
     return result;
 }
+exports.minimumInRange = minimumInRange;
+function minimum(xs) {
+    return minimumInRange(xs, 0, xs.length - 1);
+}
 exports.minimum = minimum;
+function minimumInRangeWith(xs, s, e, f) {
+    var result = f(xs[s]);
+    for (var i = s + 1; i <= e; i++) {
+        var candidate = f(xs[i]);
+        if (result > candidate)
+            result = candidate;
+    }
+    return result;
+}
+exports.minimumInRangeWith = minimumInRangeWith;
+function minimumWith(xs, f) {
+    return minimumInRangeWith(xs, 0, xs.length - 1, f);
+}
+exports.minimumWith = minimumWith;
 function replicate(n, x) {
     var result = new Array(n);
     for (var i = 0; i < result.length; i++) {
@@ -150,9 +195,8 @@ function dropWhile(f, xs) {
 }
 exports.dropWhile = dropWhile;
 function group(xs) {
-    if (xs.length == 0) {
+    if (xs.length == 0)
         return [];
-    }
     var result = [];
     var last = [xs[0]];
     for (var i = 1; i < xs.length; i++) {
@@ -168,6 +212,19 @@ function group(xs) {
     return result;
 }
 exports.group = group;
+function nub(xs) {
+    if (xs.length == 0)
+        return [];
+    var result = [];
+    result.push(xs[0]);
+    for (var i = 1; i < xs.length; i++) {
+        if (xs[i] !== xs[i - 1]) {
+            result.push(xs[i]);
+        }
+    }
+    return result;
+}
+exports.nub = nub;
 function filter(f, xs) {
     var result = [];
     for (var i = 0; i < xs.length; i++) {
@@ -196,3 +253,75 @@ function unzip(xs) {
     return [r1, r2];
 }
 exports.unzip = unzip;
+function range(from, to) {
+    var result = Array(to - from + 1);
+    for (var i = from; i <= to; i++) {
+        result[i - from] = i;
+    }
+    return result;
+}
+exports.range = range;
+function copy(xs) {
+    return xs.slice(0);
+}
+exports.copy = copy;
+function apply_permutation(p, xs) {
+    var n = xs.length;
+    var result = new Array(n);
+    for (var i = 0; i < n; i++) {
+        result[i] = xs[p[i]];
+    }
+    return result;
+}
+exports.apply_permutation = apply_permutation;
+function next_permutation(p) {
+    var n = p.length;
+    if (n < 2)
+        return null;
+    var r = copy(p);
+    var k = n - 2;
+    for (; k >= 0 && r[k] >= r[k + 1]; k--)
+        ;
+    if (k < 0)
+        return null;
+    for (var i = k + 1, j = n - 1; i < j; i++, j--) {
+        var t_1 = r[i];
+        r[i] = r[j];
+        r[j] = t_1;
+    }
+    var next = k + 1;
+    for (; r[next] <= r[k]; next++)
+        ;
+    var t = r[k];
+    r[k] = r[next];
+    r[next] = t;
+    return r;
+}
+exports.next_permutation = next_permutation;
+function create(n, value) {
+    return replicate(n, value);
+}
+exports.create = create;
+function createWith(n, f) {
+    var result = new Array(n);
+    for (var i = 0; i < n; i++) {
+        result[i] = f(i);
+    }
+    return result;
+}
+exports.createWith = createWith;
+function create2D(n1, n2, value) {
+    return map(function (_) { return replicate(n2, value); }, replicate(n1, 0));
+}
+exports.create2D = create2D;
+function create2DWith(n1, n2, f) {
+    var result = new Array(n1);
+    for (var i = 0; i < n1; i++) {
+        result[i] = new Array(n2);
+        for (var j = 0; j < n2; j++) {
+            result[i][j] = f(i, j);
+        }
+    }
+    return result;
+}
+exports.create2DWith = create2DWith;

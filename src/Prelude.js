@@ -34,3 +34,13 @@ function compose(g, f) {
     return function (x) { return g(f(x)); };
 }
 exports.compose = compose;
+function gcd(a, b) {
+    var r = a % b;
+    while (r !== 0) {
+        a = b;
+        b = r;
+        r = a % b;
+    }
+    return b;
+}
+exports.gcd = gcd;

@@ -25,3 +25,12 @@ export function flip2<A, B, C>(f : (x : A, y : B) => C) : (y : B, x : A) => C {
 export function compose<A, B, C>(g : (x : B) => C, f : (x : A) => B) {
   return (x : A) => g(f(x));
 }
+export function gcd(a : number, b : number) {
+    let r = a % b;
+    while (r !== 0) {
+        a = b;
+        b = r;
+        r = a % b;
+    }
+    return b;
+}

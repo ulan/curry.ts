@@ -23,4 +23,14 @@ describe('Prelude Tests', function () {
     it('should compose', function () {
         expect(Prelude_1.compose(function (x) { return 1 + x; }, function (x) { return -x; })(10)).to.equals(-9);
     });
+    it('should gcd', function () {
+        expect(Prelude_1.gcd(10, 3)).to.equals(1);
+        expect(Prelude_1.gcd(10, 10)).to.equals(10);
+        expect(Prelude_1.gcd(3, 6)).to.equals(3);
+        expect(Prelude_1.gcd(4, 6)).to.equals(2);
+        expect(Prelude_1.gcd(548399024, 274199512)).to.equals(274199512);
+        expect(Prelude_1.gcd(274199512, 274199512)).to.equals(274199512);
+        expect(Prelude_1.gcd(822598536, 274199512)).to.equals(274199512);
+        expect(Prelude_1.gcd(822598536, 548399024)).to.equals(274199512);
+    });
 });

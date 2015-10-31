@@ -80,19 +80,54 @@ export function product<T>(xs : number[]) : number {
     }
     return result;
 }
-export function maximum<T>(xs : T[]) : T {
-    let result = xs[0];
-    for (let i = 1; i < xs.length; i++) {
+export function sort<T>(xs : T[], compare : (a : T, b : T) => number) : T[] {
+    return copy(xs).sort(compare);
+}
+export function sortInPlace<T>(xs : T[], compare : (a : T, b : T) => number) : T[] {
+    xs.sort(compare);
+    return xs;
+}
+export function maximumInRange<T>(xs : T[], s : number, e : number) : T {
+    let result = xs[s];
+    for (let i = s + 1; i <= e; i++) {
         if (result < xs[i]) result = xs[i];
     }
     return result;
 }
-export function minimum<T>(xs : T[]) : T {
-    let result = xs[0];
-    for (let i = 1; i < xs.length; i++) {
+export function maximum<T>(xs : T[]) : T {
+    return maximumInRange(xs, 0, xs.length - 1);
+}
+export function maximumInRangeWith<T, R>(xs : T[], s : number, e : number, f : (x : T) => R) : R {
+    let result = f(xs[s]);
+    for (let i = s + 1; i <= e; i++) {
+        let candidate = f(xs[i]);
+        if (result < candidate) result = candidate;
+    }
+    return result;
+}
+export function maximumWith<T, R>(xs : T[], f : (x : T) => R) : R {
+    return maximumInRangeWith(xs, 0, xs.length - 1, f);
+}
+export function minimumInRange<T>(xs : T[], s : number, e : number) : T {
+    let result = xs[s];
+    for (let i = s + 1; i <= e; i++) {
         if (result > xs[i]) result = xs[i];
     }
     return result;
+}
+export function minimum<T>(xs : T[]) : T {
+    return minimumInRange(xs, 0, xs.length - 1);
+}
+export function minimumInRangeWith<T, R>(xs : T[], s : number, e : number, f : (x : T) => R) : R {
+    let result = f(xs[s]);
+    for (let i = s + 1; i <= e; i++) {
+        let candidate = f(xs[i]);
+        if (result > candidate) result = candidate;
+    }
+    return result;
+}
+export function minimumWith<T, R>(xs : T[], f : (x : T) => R) : R {
+    return minimumInRangeWith(xs, 0, xs.length - 1, f);
 }
 export function replicate<T>(n : number, x : T) : T[] {
     let result = new Array(n);
@@ -127,9 +162,7 @@ export function dropWhile<T>(f : (x : T) => boolean, xs : T[]) : T[] {
     return [];
 }
 export function group<T>(xs : T[]) : T[][] {
-    if (xs.length == 0) {
-        return [];
-    }
+    if (xs.length == 0) return [];
     let result : T[][] = [];
     let last = [xs[0]];
     for (let i = 1; i < xs.length; i++) {
@@ -141,6 +174,17 @@ export function group<T>(xs : T[]) : T[][] {
         }
     }
     result.push(last);
+    return result;
+}
+export function nub<T>(xs : T[]) : T[] {
+    if (xs.length == 0) return [];
+    let result : T[]= [];
+    result.push(xs[0]);
+    for (let i = 1; i < xs.length; i++) {
+        if (xs[i] !== xs[i - 1]) {
+            result.push(xs[i]);
+        }
+    }
     return result;
 }
 export function filter<T>(f : (x : T) => boolean, xs : T[]) : T[] {
@@ -166,4 +210,66 @@ export function unzip<A,B>(xs : [A, B][]) : [A[], B[]] {
         r2[i] = xs[i][1];
     }
     return [r1, r2];
+}
+export function range(from : number, to : number) : number[] {
+    let result = Array(to - from + 1);
+    for (let i = from; i <= to; i++) {
+        result[i - from] = i;
+    }
+    return result;
+}
+export function copy<A>(xs : A[]) : A[] {
+    return xs.slice(0);
+}
+export function apply_permutation<A>(p : number[], xs : A[]) : A[] {
+    let n = xs.length;
+    let result = new Array(n);
+    for (let i = 0; i < n; i++) {
+        result[i] = xs[p[i]];
+    }
+    return result;
+}
+export function next_permutation(p : number[]) : number[] {
+    let n = p.length;
+    if (n < 2) return null;
+    let r = copy(p);
+    let k = n - 2;
+    for (; k >= 0 && r[k] >= r[k + 1]; k--);
+    if (k < 0) return null;
+    // r[k] < r[k + 1]
+    for (let i = k + 1, j = n - 1; i < j; i++, j--) {
+        let t = r[i];
+        r[i] = r[j];
+        r[j] = t;
+    }
+    let next = k + 1;
+    for (; r[next] <= r[k]; next++);
+    // r[k] < r[next].
+    let t = r[k];
+    r[k] = r[next];
+    r[next] = t;
+    return r;
+}
+export function create<T>(n : number, value : T) : T[] {
+    return replicate(n, value);
+}
+export function createWith<T>(n : number, f : (i : number) => T) : T[]{
+    let result = new Array(n);
+    for (let i = 0; i < n; i++) {
+        result[i] = f(i);
+    }
+    return result;
+}
+export function create2D<T>(n1 : number, n2 : number, value : T) : T[][] {
+    return map(_ => replicate(n2, value), replicate(n1, 0));
+}
+export function create2DWith<T>(n1 : number, n2 : number, f : (i : number, j : number) => T) : T[][]{
+    let result = new Array(n1);
+    for (let i = 0; i < n1; i++) {
+        result[i] = new Array(n2);
+        for (let j = 0; j < n2; j++) {
+            result[i][j] = f(i, j);
+        }
+    }
+    return result;
 }

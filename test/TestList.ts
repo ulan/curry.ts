@@ -76,4 +76,16 @@ describe('List Tests', () => {
       expect(List.unzip([[1, 3], [2, 4]])[0]).to.deep.equal([1, 2]);
       expect(List.unzip([[1, 3], [2, 4]])[1]).to.deep.equal([3, 4]);
     });
+    it('should permute 2', () => {
+      expect(List.next_permutation([1, 2])).to.deep.equal([2, 1]);
+      expect(List.next_permutation([2, 1])).to.equals(null);
+    });
+    it('should permute 3', () => {
+      expect(List.next_permutation([1, 2, 3])).to.deep.equal([1, 3, 2]);
+      expect(List.next_permutation([1, 3, 2])).to.deep.equal([2, 1, 3]);
+      expect(List.next_permutation([2, 1, 3])).to.deep.equal([2, 3, 1]);
+      expect(List.next_permutation([2, 3, 1])).to.deep.equal([3, 1, 2]);
+      expect(List.next_permutation([3, 1, 2])).to.deep.equal([3, 2, 1]);
+      expect(List.next_permutation([3, 2, 1])).to.equals(null);
+    });
 });
